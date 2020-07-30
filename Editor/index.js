@@ -65,6 +65,7 @@ editor.Panels.addPanel({
             context: 'save-json',
             command(editor) {
                 editor.store(res => console.log("Saved from panel"));
+                alert("Saved");
             },
         },
         {
