@@ -1,7 +1,7 @@
 var express = require("express");
 var app = express();
 var bodyParser = require('body-parser')
-var jsonParser = bodyParser.json({limit: '50mb'})
+var jsonParser = bodyParser.json({ limit: '50mb' })
 var utilityFunctions = require("./utility_functions");
 
 var data = {};
@@ -23,38 +23,37 @@ app.get("/showSaved", (req, resp) => {
     databaseData.then((databaseDataResolved) => {
         // console.log(databaseDataResolved);
         let htmlRenderComp = "";
-        let htmlListing="";
+        let htmlListing = "";
 
-        htmlComponents=JSON.parse(databaseDataResolved["gjs-components"][0]);
+        htmlComponents = JSON.parse(databaseDataResolved["gjs-components"][0]);
         // console.log(htmlComponents);
-        htmlComponents.forEach((element,index) => {
-            if(element)
-            {
-                if(element["attributes"]){
-                    let tagname=element["tagName"]?element["tagName"]:"";
-                    let typec=element["type"]?element["type"]:"";
-                    htmlListing=htmlListing+"<li><a href=#"+element["attributes"]["id"]+">Element:"+index+" "
-                    +tagname
-                    +" "
-                    +typec
-                    +"</a></li>";
-                }    
+        htmlComponents.forEach((element, index) => {
+            if (element) {
+                if (element["attributes"]) {
+                    let tagname = element["tagName"] ? element["tagName"] : "";
+                    let typec = element["type"] ? element["type"] : "";
+                    htmlListing = htmlListing + "<li><a href=#" + element["attributes"]["id"] + ">Element:" + index + " "
+                        + tagname
+                        + " "
+                        + typec
+                        + "</a></li>";
+                }
             }
-            
+
         });
-        htmlListing="<ul>Site Map<br/>"+htmlListing+"</ul>";
+        htmlListing = "<ul>Site Map<br/>" + htmlListing + "</ul>";
 
-        htmlPortion=databaseDataResolved["gjs-html"];
-        cssPortion=databaseDataResolved["gjs-css"];
+        htmlPortion = databaseDataResolved["gjs-html"];
+        cssPortion = databaseDataResolved["gjs-css"];
 
-        htmlRenderComp=htmlRenderComp+htmlListing+"<br/>"+htmlPortion+"<style>"+cssPortion+"</style>";
+        htmlRenderComp = htmlRenderComp + htmlListing + "<br/>" + htmlPortion + "<style>" + cssPortion + "</style>";
         resp.send(htmlRenderComp);
     })
-    .catch((err)=>{
-        console.error(err);
-        console.error("Error fetching data");
-        resp.send("Error loading");
-    });
+        .catch((err) => {
+            console.error(err);
+            console.error("Error fetching data");
+            resp.send("Error loading");
+        });
 
 
 
@@ -78,4 +77,4 @@ app.post("/submitmongo", jsonParser, (req, resp) => {
 });
 
 
-app.listen(3000 || process.env.PORT);
+app.listen(process.env.PORT || 3000);
